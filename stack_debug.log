@@ -1,151 +1,360 @@
-[21:41:28.407485]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.574500] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
+        [0] element: <4489>
+        [1] element: <4489>
+        [2] element: <4489>
+        [3] element: <4489>
+        [4] element: <4489>
+        [5] canary: <2.00125e+08>
 
     size:           0
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
-Stack is empty :(
-
 ========================================
 
-[21:41:28.415480]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.576203] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
         [1] element: <4489>
         [2] element: <4489>
         [3] element: <4489>
         [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
     size:           1
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.416323]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.577700] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
         [1] element: <4489>
         [2] element: <4489>
         [3] element: <4489>
         [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
     size:           1
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.422441]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.578399] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
         [2] element: <4489>
         [3] element: <4489>
         [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
     size:           2
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.425935]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.578959] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+        [2] element: <4489>
+        [3] element: <4489>
+        [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
+    size:           2
+    capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.579407] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
         [3] element: <4489>
         [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
     size:           3
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.429089]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.579766] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+        [3] element: <4489>
+        [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
+    size:           3
+    capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.580220] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
        *[3] element: <40>
         [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
     size:           4
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.432786]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.580440] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+        [4] element: <4489>
+        [5] canary: <2.00125e+08>
+
+    size:           4
+    capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.580854] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
        *[3] element: <40>
        *[4] element: <50>
+        [5] canary: <2.00125e+08>
+
     size:           5
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.433043]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.581137] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c13f0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
        *[3] element: <40>
        *[4] element: <50>
+        [5] canary: <2.00125e+08>
+
     size:           5
     capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.437111]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.581522] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  realloc_stack
+Line:      81
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c14b0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db13f8
+
     data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+        [5] canary: <2.00125e+08>
+
+    size:           5
+    capacity:       5
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.581693] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  realloc_stack
+Line:      98
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+        [5] element: <4489>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           5
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.582320] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
@@ -156,19 +365,62 @@ struct stack_t {
         [7] element: <4489>
         [8] element: <4489>
         [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
     size:           6
-    capacity:       10
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
 ========================================
 
-[21:41:28.440000]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.582654] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      56
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c14b0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
     data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           6
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.582841] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_push
+Line:      66
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
@@ -176,24 +428,32 @@ struct stack_t {
        *[4] element: <50>
        *[5] element: <60>
        *[6] element: <70>
-       *[7] element: <4489>
-       *[8] element: <4489>
-       *[9] element: <4489>
-    size:           18446744073709551610
-    capacity:       10
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           7
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
-
-!!! WARNING: SIZE > CAPACITY !!!
-
 ========================================
 
-[21:41:28.440199]
-=========== STACK DEBUG DUMP ===========
+[01:49:26.583259] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_pop
+Line:      71
+Struct:    stack_t at [000000e132bffaa0]
 
 struct stack_t {
-    struct address: 000000fa945ffbf0
-    data address:   000000fa941c14b0
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
     data in data:
+        [-1] canary: <1.25078e+07>
        *[0] element: <10>
        *[1] element: <20>
        *[2] element: <30>
@@ -201,14 +461,116 @@ struct stack_t {
        *[4] element: <50>
        *[5] element: <60>
        *[6] element: <70>
-       *[7] element: <4489>
-       *[8] element: <4489>
-       *[9] element: <4489>
-    size:           18446744073709551610
-    capacity:       10
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           7
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
 }
+========================================
 
-!!! WARNING: SIZE > CAPACITY !!!
+[01:49:26.583608] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  stack_pop
+Line:      76
+Struct:    stack_t at [000000e132bffaa0]
 
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           6
+    capacity:       12
+    canary left:    0xBEDABEDA
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.583879] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  main
+Line:      28
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           6
+    capacity:       12
+    canary left:    0x0
+    canary right:   0xBEDABEDAA
+}
+========================================
+
+[01:49:26.584529] =========== STACK DEBUG DUMP ===========
+File:      main.cpp
+Function:  main
+Line:      29
+Struct:    stack_t at [000000e132bffaa0]
+
+struct stack_t {
+    struct address: 000000e132bffaa0
+    data address:   000000e132db14c8
+
+    data in data:
+        [-1] canary: <1.25078e+07>
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+        [10] element: <4489>
+        [11] element: <4489>
+        [12] canary: <2.00125e+08>
+
+    size:           6
+    capacity:       12
+    canary left:    0x0
+    canary right:   0xBEDABEDAA
+}
 ========================================
 
