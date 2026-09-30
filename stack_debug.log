@@ -1,0 +1,214 @@
+[21:41:28.407485]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+
+    size:           0
+    capacity:       5
+}
+
+Stack is empty :(
+
+========================================
+
+[21:41:28.415480]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+        [1] element: <4489>
+        [2] element: <4489>
+        [3] element: <4489>
+        [4] element: <4489>
+    size:           1
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.416323]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+        [1] element: <4489>
+        [2] element: <4489>
+        [3] element: <4489>
+        [4] element: <4489>
+    size:           1
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.422441]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+        [2] element: <4489>
+        [3] element: <4489>
+        [4] element: <4489>
+    size:           2
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.425935]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+        [3] element: <4489>
+        [4] element: <4489>
+    size:           3
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.429089]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+        [4] element: <4489>
+    size:           4
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.432786]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+    size:           5
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.433043]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c13f0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+    size:           5
+    capacity:       5
+}
+
+========================================
+
+[21:41:28.437111]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c14b0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+        [6] element: <4489>
+        [7] element: <4489>
+        [8] element: <4489>
+        [9] element: <4489>
+    size:           6
+    capacity:       10
+}
+
+========================================
+
+[21:41:28.440000]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c14b0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+       *[6] element: <70>
+       *[7] element: <4489>
+       *[8] element: <4489>
+       *[9] element: <4489>
+    size:           18446744073709551610
+    capacity:       10
+}
+
+!!! WARNING: SIZE > CAPACITY !!!
+
+========================================
+
+[21:41:28.440199]
+=========== STACK DEBUG DUMP ===========
+
+struct stack_t {
+    struct address: 000000fa945ffbf0
+    data address:   000000fa941c14b0
+    data in data:
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+       *[3] element: <40>
+       *[4] element: <50>
+       *[5] element: <60>
+       *[6] element: <70>
+       *[7] element: <4489>
+       *[8] element: <4489>
+       *[9] element: <4489>
+    size:           18446744073709551610
+    capacity:       10
+}
+
+!!! WARNING: SIZE > CAPACITY !!!
+
+========================================
+
