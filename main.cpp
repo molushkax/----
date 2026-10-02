@@ -1,8 +1,13 @@
 #include "stack.h"
 
-// TODO обработка канареек
-// TODO дестрой топ функции
+// TODO должен ли ассерт вылетать при первой же ошибке или пусть ждет пока напишутся все
+// TODO дестрой топ copy функции
 // TODO w e f d i with errors
+// TODO unit test stack with raspechatka
+// TODO hash
+// TODO validnost ukazateley
+// TODO specificator
+// TODO dump - расширенный верификатор
 
 int main () {
     stack_t stk1 = {};
@@ -10,7 +15,7 @@ int main () {
 
     stackerr_t err = stack_init (&stk1);
     if (err != STACK_OK) {
-        print_custom_error (err, __FUNCTION__, __LINE__);
+        print_custom_error (&stk1, err, __PRETTY_FUNCTION__, __LINE__);
         return 1;
     }
 
@@ -18,21 +23,29 @@ int main () {
     printf ("Start capacity: %zu\n", stk1.capacity);
     printf ("Data ptr: %p\n\n", (void*)stk1.data);
 
-    stack_push (&stk1, 10);
-    stack_push (&stk1, 20);
-    stack_push (&stk1, 30);
-    stack_push (&stk1, 40);
-    stack_push (&stk1, 50);
-    stack_push (&stk1, 60);
-    stack_push (&stk1, 70);
+    push_and_check (&stk1, 10, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 20, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 30, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 40, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 50, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 60, __PRETTY_FUNCTION__, __LINE__);
+    push_and_check (&stk1, 70, __PRETTY_FUNCTION__, __LINE__);
 
-    stack_pop (&stk1);
+    pop_and_check (&stk1, __PRETTY_FUNCTION__, __LINE__);
+    pop_and_check (&stk1, __PRETTY_FUNCTION__, __LINE__);
+    pop_and_check (&stk1, __PRETTY_FUNCTION__, __LINE__);
+    pop_and_check (&stk1, __PRETTY_FUNCTION__, __LINE__);
 
-    stk1.canary_left = 0;
-    stack_dump (&stk1, __FUNCTION__, __LINE__);
-    stack_verify (&stk1, __FUNCTION__, __LINE__);
+
+    //stk1.canary_left = 0;
+    stack_dump (&stk1, __PRETTY_FUNCTION__, __LINE__);
+    stack_verify (&stk1, __PRETTY_FUNCTION__, __LINE__);
 
     free (stk1.data - 1);
+    err = stack_destroy (&stk1);
+    if (err != STACK_OK) print_custom_error(&stk1, err, __PRETTY_FUNCTION__, __LINE__);
+
+    stack_dump (&stk1, __PRETTY_FUNCTION__, __LINE__);
     printf ("Finish of program\n");
 }
 
@@ -42,16 +55,15 @@ stackerr_t stack_init (stack_t* stk) {
     stk->canary_left  = STRUCT_CANARY_VALUE1;
     stk->canary_right = STRUCT_CANARY_VALUE2;
 
-    stack_elem_t* raw = (stack_elem_t*)calloc (stk->capacity + 2, sizeof (stack_elem_t));
+    stack_elem_t* raw = (stack_elem_t*)calloc (stk->capacity + TWO_FOR_CANARIES, sizeof (stack_elem_t));
     if (raw == NULL) return ERROR_WITH_MEMORY_ALLOCATION;
 
     stk->data = raw + 1;
 
-    stk->data[-1]            = STACK_CANARY_VALUE1;
-    stk->data[stk->capacity] = STACK_CANARY_VALUE2;
+    stk->data[-1]            = DATA_CANARY_VALUE1;
+    stk->data[stk->capacity] = DATA_CANARY_VALUE2;
 
-    for (size_t i = 0; i < stk->capacity; i++)
-        stk->data[i] = POIZON;
+    poison_memset (stk->data, 0, stk->capacity);
 
     return STACK_OK;
 }
@@ -60,7 +72,7 @@ stackerr_t stack_push (stack_t* stk, stack_elem_t value) {
     STACK_ASSERT (stk);
 
     if (stk->size >= stk->capacity) {
-        stackerr_t err = realloc_stack (stk);
+        stackerr_t err = realloc_stack_up (stk);
         if (err != STACK_OK) return err;
     }
 
@@ -70,95 +82,205 @@ stackerr_t stack_push (stack_t* stk, stack_elem_t value) {
     STACK_ASSERT_DBG (stk);
     return STACK_OK;
 }
+//TODO protect  на валидность проверка
+void push_and_check (stack_t* stk, stack_elem_t value, const char* func, int line) {
+    assert (stk != NULL);
+
+    stackerr_t err = stack_push (stk, value);
+    check_of_pushing (stk, err, func, line);
+}
+
+void check_of_pushing (const stack_t* stk, int err, const char* func, int line) {
+    STACK_ASSERT (stk);
+
+    if (err != STACK_OK)
+    {
+        print_custom_error (stk, err, func, line);
+        stack_dump (stk, func, line);
+    }
+
+    STACK_ASSERT_DBG (stk);
+}
 
 stackerr_t stack_pop (stack_t* stk) {
     STACK_ASSERT (stk);
 
+    if (stk->size == 0) {
+        return STACK_UNDERFLOW;
+    }
+
     stk->size--;
-    stk->data[stk->size] = POIZON;
+    stk->data[stk->size] = POISON;
+
+    if (stk->size * SHRINK_COEFFICIENT < stk->capacity && stk->capacity > MIN_CAPACITY) {
+        stackerr_t err = realloc_stack_down (stk);
+        if (err != STACK_OK) {
+            return err;
+        }
+    }
 
     STACK_ASSERT (stk);
     return STACK_OK;
 }
 
-stackerr_t realloc_stack (stack_t* stk) {
+void pop_and_check (stack_t* stk, const char* func, int line) {
+    assert (stk != NULL);
+
+    stackerr_t err = stack_pop (stk);
+    if (err != STACK_OK) {
+        print_custom_error (stk, err, func, line);
+        stack_dump (stk, func, line);
+    }
+
+    STACK_ASSERT_DBG (stk);
+}
+
+stackerr_t realloc_stack_up (stack_t* stk) {
     STACK_ASSERT (stk);
 
-    size_t new_capacity = stk->capacity == 0 ? 5 : stk->capacity * 2 + 2;
+    size_t new_capacity = stk->capacity == 0 ? 5 : stk->capacity * COEFFICIENT + TWO_FOR_CANARIES;
 
     stack_elem_t* raw = stk->data - 1;
-    stack_elem_t* new_raw = (stack_elem_t*)realloc (raw, (new_capacity + 2) * sizeof (stack_elem_t));
+    stack_elem_t* new_raw = (stack_elem_t*)realloc (raw, (new_capacity + TWO_FOR_CANARIES) * sizeof (stack_elem_t));
     if (new_raw == NULL) return ERROR_WITH_MEMORY_REALLOCATION;
 
     stk->data     = new_raw + 1;
     stk->capacity = new_capacity;
 
-    stk->data[-1]            = STACK_CANARY_VALUE1;
-    stk->data[stk->capacity] = STACK_CANARY_VALUE2;
+    stk->data[-1]            = DATA_CANARY_VALUE1;
+    stk->data[stk->capacity] = DATA_CANARY_VALUE2;
 
-    for (size_t i = stk->size; i < stk->capacity; i++)
-        stk->data[i] = POIZON;
+    poison_memset (stk->data, stk->size, stk->capacity);
+
+    STACK_ASSERT_DBG (stk);
+    return STACK_OK;
+}
+
+stackerr_t realloc_stack_down (stack_t* stk) {
+    STACK_ASSERT (stk);
+
+    size_t new_capacity = stk->capacity / COEFFICIENT;
+    if (new_capacity < MIN_CAPACITY) {
+        new_capacity = MIN_CAPACITY;
+    }
+
+    if (new_capacity >= stk->capacity || stk->size > new_capacity) {
+        return STACK_OK;
+    }
+
+    stack_elem_t* raw = stk->data - 1;
+    stack_elem_t* new_raw = (stack_elem_t*)realloc (raw, (new_capacity + TWO_FOR_CANARIES) * sizeof (stack_elem_t));
+    if (new_raw == NULL) return ERROR_WITH_MEMORY_REALLOCATION;
+
+    stk->data     = new_raw + 1;
+    stk->capacity = new_capacity;
+
+    stk->data[-1]            = DATA_CANARY_VALUE1;
+    stk->data[stk->capacity] = DATA_CANARY_VALUE2;
+
+    poison_memset (stk->data, stk->size, stk->capacity);
 
     STACK_ASSERT_DBG (stk);
     return STACK_OK;
 }
 
 bool stack_verify (const stack_t* stk, const char* func, int line) {
+    stack_dump (stk, func, line);
+
     if (stk == NULL) {
         fprintf (stderr, RED "\nERROR" NO_COLOR " Stack pointer is NULL\n");
-        fprintf (stderr, "File: %s, function: %s, line %d\n\n", __FILE__, func, line);
+        print_error_context (stk, func, line);
+
         return false;
     }
 
-    stack_dump (stk, func, line);
 
     if (stk->canary_left != STRUCT_CANARY_VALUE1) {
         print_canary_error ("left struct canary",
                             STRUCT_CANARY_VALUE1, stk->canary_left, func, line);
-        return false;
-    }
-    if (stk->canary_right != STRUCT_CANARY_VALUE2) {
-        print_canary_error ("right struct canary",
-                            STRUCT_CANARY_VALUE2, stk->canary_right, func, line);
-        return false;
-    }
-    if (stk->capacity == 0) {
-        print_custom_error (ERROR_CAPACITY_ZERO, func, line);
-        return false;
-    }
-    if (stk->size < 0) {
-        print_custom_error (ERROR_SIZE_LESS_THAN_ZERO, func, line);
-        return false;
-    }
-    if (stk->size > stk->capacity) {
-        print_custom_error (ERROR_SIZE_EXCEEDS_CAPACITY, func, line);
-        return false;
-    }
-    if (stk->data == NULL) {
-        print_custom_error (ERROR_DATA_IS_NULL, func, line);
+        print_error_context (stk, func, line);
+
         return false;
     }
 
-    if (!equal_double (stk->data[-1], STACK_CANARY_VALUE1)) {
-        print_canary_error ("left data canary",
-                            (unsigned long long)STACK_CANARY_VALUE1,
-                            (unsigned long long)stk->data[-1], func, line);
+    if (stk->canary_right != STRUCT_CANARY_VALUE2) {
+        print_canary_error ("right struct canary",
+                            STRUCT_CANARY_VALUE2, stk->canary_right, func, line);
+        print_error_context (stk, func, line);
+
         return false;
     }
-    if (!equal_double (stk->data[stk->capacity], STACK_CANARY_VALUE2)) {
+
+    if (stk->capacity == 0) {
+        print_custom_error (stk, ERROR_CAPACITY_ZERO, func, line);
+
+        return false;
+    }
+
+    if (stk->size < 0) {
+        print_custom_error (stk, ERROR_SIZE_LESS_THAN_ZERO, func, line);
+
+        return false;
+    }
+
+    if (stk->size > stk->capacity) {
+        print_custom_error (stk, ERROR_SIZE_EXCEEDS_CAPACITY, func, line);
+
+        return false;
+    }
+
+    if (stk->data == NULL) {
+        print_custom_error (stk, ERROR_DATA_IS_NULL, func, line);
+
+        return false;
+    }
+
+    if (stk->data[-1] != DATA_CANARY_VALUE1) { //TODO ==
+        print_canary_error ("left data canary",
+                            (unsigned long long)DATA_CANARY_VALUE1,
+                            (unsigned long long)stk->data[-1], func, line);
+        print_error_context (stk, func, line);
+
+        return false;
+    }
+
+    if (stk->data[stk->capacity] != DATA_CANARY_VALUE2) {
         print_canary_error ("right data canary",
-                            (unsigned long long)STACK_CANARY_VALUE2,
+                            (unsigned long long)DATA_CANARY_VALUE2,
                             (unsigned long long)stk->data[stk->capacity], func, line);
+        print_error_context (stk, func, line);
+
+        return false;
+    }
+
+    int number_of_poison = poison_check (stk);
+    if (number_of_poison != 0) {
+        print_poison_error (number_of_poison, func, line);
+        print_error_context (stk, func, line);
+
         return false;
     }
 
     return true;
 }
 
+stackerr_t stack_destroy (stack_t* stk) {
+    if (stk == NULL) return ERROR_STACK_IS_NULL;
+
+    stk->data = NULL;
+    stk->size = POISON;
+    stk->capacity = POISON;
+    stk->canary_left = POISON;
+    stk->canary_right = POISON;
+    stk = NULL;
+
+    return STACK_OK;
+}
+
 void stack_dump (const stack_t* stk, const char* func, int line) {
     const char* filename = "stack_debug.log";
 
-    FILE* log_file = fopen (filename, "a");
+    FILE* log_file = fopen (filename, "a+");
     if (log_file == NULL) {
         fprintf (stderr, "Cannot open debug file %s\n", filename);
         return;
@@ -193,8 +315,19 @@ void stack_dump (const stack_t* stk, const char* func, int line) {
 
     fprintf (log_file, "\n    size:           %zu\n", stk->size);
     fprintf (log_file, "    capacity:       %zu\n", stk->capacity);
-    fprintf (log_file, "    canary left:    0x%llX\n", stk->canary_left);
-    fprintf (log_file, "    canary right:   0x%llX\n", stk->canary_right);
+
+    #ifndef NDEBUG
+        fprintf (log_file, "    canary left:    0x%llX ", stk->canary_left);
+        stackerr_t left_canary_check = check_first_struct_canary (stk->canary_left);
+        if (left_canary_check == STACK_OK) fprintf (log_file, " (ALIVE)\n");
+        else fprintf (log_file, "(NEED YOUR HELP, PROGRAMMER)\n");
+
+        fprintf (log_file, "    canary right:   0x%llX ", stk->canary_right);
+        stackerr_t right_canary_check = check_second_struct_canary (stk->canary_right);
+        if (right_canary_check == STACK_OK) fprintf (log_file,  "(ALIVE)\n");
+        else fprintf (log_file, "(NEED YOUR HELP, PROGRAMMER)\n");
+    #endif
+
     fprintf (log_file, "}\n");
 
     if (stk->size > stk->capacity)
@@ -202,7 +335,7 @@ void stack_dump (const stack_t* stk, const char* func, int line) {
     if (stk->size < 0)
         fprintf (log_file, "Stack has unusual size...\n");
     if (stk->data == NULL)
-        fprintf (log_file, "WARNING: data pointer is NULL\n");
+        fprintf (log_file, "ERROR: data pointer is NULL\n");
 
     fprintf (log_file, "========================================\n\n");
     fclose (log_file);
@@ -212,21 +345,39 @@ void print_data_elements (FILE* log_file, const stack_elem_t* data, size_t capac
     assert (log_file != NULL);
     assert (data != NULL);
 
-    fprintf (log_file, "\n    data in data:\n");
-    fprintf (log_file, "        [-1] canary: <%lg>\n", data[-1]);
+    #ifndef NDEBUG
+        if (size != 0) fprintf (log_file, "\n    data in data:\n");
+    #else
+        fprintf (log_file, "\n    data in data:\n");
+    #endif
+
+    #ifndef NDEBUG
+        fprintf (log_file, "        [-1] canary: <%lg> ", data[-1]);
+        stackerr_t left_canary_check = check_first_data_canary (data[-1]);
+        if (left_canary_check == STACK_OK) fprintf (log_file, "(ALIVE)\n");
+        else fprintf (log_file, "(NEED YOUR HELP, PROGRAMMER)\n");
+    #endif
 
     for (size_t i = 0; i < capacity; i++)
     {
         if (i < size)
             fprintf (log_file, "       *[%zu] element: <%lg>\n", i, data[i]);
-        else
-            fprintf (log_file, "        [%zu] element: <%lg>\n", i, data[i]);
+        else {
+            #ifndef NDEBUG
+            fprintf (log_file, "        [%zu] element: <%lg> POISON\n", i, data[i]);
+            #endif
+        }
     }
 
-    fprintf (log_file, "        [%zu] canary: <%lg>\n", capacity, data[capacity]);
+    #ifndef NDEBUG
+        fprintf (log_file, "        [%zu] canary:  <%lg> ", capacity, data[capacity]);
+        stackerr_t right_canary_check = check_second_data_canary (data[capacity]);
+        if (right_canary_check == STACK_OK) fprintf (log_file, "(ALIVE)\n");
+        else fprintf (log_file, "(NEED YOUR HELP, PROGRAMMER)\n");
+    #endif
 }
 
-void print_custom_error (int error_code, const char* function_name, int line) {
+void print_custom_error (const stack_t* stk, int error_code, const char* function_name, int line) {
     const char* message = "error";
     size_t number_of_errors = sizeof (errors) / sizeof (errors[0]);
 
@@ -237,9 +388,9 @@ void print_custom_error (int error_code, const char* function_name, int line) {
         }
     }
 
-    fprintf (stderr, RED "ERROR %d: %s.\n" NO_COLOR
-             "File: %s, function: %s, line %d\n\n",
-             error_code, message, __FILE__, function_name, line);
+    fprintf (stderr, RED "ERROR %d: %s.\n" NO_COLOR,
+             error_code, message);
+    print_error_context (stk, function_name, line);
 }
 
 void print_error_context (const stack_t* stk, const char* func, int line) {
@@ -260,6 +411,58 @@ void print_error_context (const stack_t* stk, const char* func, int line) {
              stk->canary_left, stk->canary_right);
 }
 
+void poison_memset (stack_elem_t* data, size_t from, size_t to) {
+    assert (data != NULL);
+
+    for (size_t i = from; i < to; i++)
+        data[i] = POISON;
+}
+
+int poison_check (const stack_t* stk) {
+    assert (stk != NULL);
+
+    int number_of_poison_values = 0;
+
+    if (stk->size == stk->capacity) return 0;
+
+    for (size_t i = stk->size; i < stk->capacity; i++) {
+        if (stk->data[i] == POISON) number_of_poison_values++;
+    }
+
+    if (number_of_poison_values != (stk->capacity - stk->size)) {
+        return number_of_poison_values - (stk->capacity - stk->size);
+    }
+
+    else return 0;
+}
+
+void print_poison_error (int difference, const char* func, int line) {
+    if (difference > 0) fprintf (stderr, "Number of poison values is bigger than supposed by %d\n \
+                                 Check %s function in %d line\n", difference, func, line);
+    if (difference < 0) fprintf (stderr, "Number of poison values is smaller than supposed by %d\n \
+                                 Check %s function in %d line\n", difference, func, line);
+}
+
+stackerr_t check_first_data_canary (stack_elem_t canary) {
+    if (canary != DATA_CANARY_VALUE1) return ERROR_LEFT_DATA_CANARY;
+    else return STACK_OK;
+}
+
+stackerr_t check_second_data_canary (stack_elem_t canary) {
+    if (canary != DATA_CANARY_VALUE2) return ERROR_RIGHT_DATA_CANARY;
+    else return STACK_OK;
+}
+
+stackerr_t check_first_struct_canary (unsigned long long canary) {
+    if (canary != STRUCT_CANARY_VALUE1) return ERROR_LEFT_STRUCT_CANARY;
+    else return STACK_OK;
+}
+
+stackerr_t check_second_struct_canary (unsigned long long canary) {
+    if (canary != STRUCT_CANARY_VALUE2) return ERROR_RIGHT_STRUCT_CANARY;
+    else return STACK_OK;
+}
+
 void print_canary_error (const char* which, unsigned long long expected,
                          unsigned long long got, const char* func, int line) {
     fprintf (stderr, RED "ERROR: %s damaged.\n" NO_COLOR
@@ -267,35 +470,3 @@ void print_canary_error (const char* which, unsigned long long expected,
              "File: %s, function: %s, line %d\n\n",
              which, expected, got, __FILE__, func, line);
 }
-
-void push_and_check (stack_t* stk, stack_elem_t value, const char* func, int line) {
-    assert (stk != NULL);
-
-    stackerr_t err = stack_push (stk, value);
-    check_of_pushing (stk, err, func, line);
-}
-
-void check_of_pushing (const stack_t* stk, int err, const char* func, int line) {
-    STACK_ASSERT (stk);
-
-    if (err != STACK_OK)
-    {
-        print_custom_error (err, func, line);
-        stack_dump (stk, func, line);
-    }
-
-    STACK_ASSERT_DBG (stk);
-}
-
-bool equal_double (double n1, double n2) {
-    if (!isfinite (n1) || !isfinite (n2)) return false;
-    return fabs (n1 - n2) < ALMOST_ZERO_VALUE;
-}
-
-void poizon_memset (stack_elem_t* data, size_t from, size_t to) {
-    assert (data != NULL);
-
-    for (size_t i = from; i < to; i++)
-        data[i] = POIZON;
-}
-
