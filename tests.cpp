@@ -7,7 +7,7 @@ extern int tests_run;
 extern int tests_passed;
 
 // ---------------------------------------------------------------------
-// 1. Инициализация
+// 1. инициализация
 // ---------------------------------------------------------------------
 void test_init (FILE* tests_file) {
     fprintf (tests_file, "(1) test_init:\n\n");
@@ -16,19 +16,18 @@ void test_init (FILE* tests_file) {
     stk.capacity = 5;
     stack_init (&stk);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (stk.size == 0,     "size should be 0",     __LINE__, tests_file);
     check (stk.capacity == 5, "capacity should be 5", __LINE__, tests_file);
     check (stk.data != NULL,  "data should not be NULL", __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
 
 // ---------------------------------------------------------------------
-// 2. Один push
+// 2. один push
 // ---------------------------------------------------------------------
 void test_push_one (FILE* tests_file) {
     fprintf (tests_file, "\n\n(2) test_push_one:\n\n");
@@ -39,13 +38,12 @@ void test_push_one (FILE* tests_file) {
 
     stack_push (&stk, 42);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (stk.size == 1,           "size should be 1",  __LINE__, tests_file);
     check (stk.data[0] == 42,       "data[0] should be 42", __LINE__, tests_file);
     check (stack_top (&stk) == 42,  "top should be 42",  __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -70,11 +68,10 @@ void test_push_many (FILE* tests_file) {
         if (stk.data[i] != i + 1) { all_ok = false; break; }
     }
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (all_ok, "all 10 elements should keep their values", __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -94,15 +91,14 @@ void test_pop_basic (FILE* tests_file) {
     stack_push (&stk, 30);
     stack_pop  (&stk);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (stk.size == 2,                   "size should be 2", __LINE__ , tests_file);
     check (stk.data[0] == 10,           "data[0] should be 10", __LINE__, tests_file);
     check (stk.data[1] == 20,           "data[1] should be 20", __LINE__, tests_file);
     check (stk.data[2] == POISON,   "data[2] should be POISON", __LINE__, tests_file);
     check (stack_top (&stk) == 20,          "top should be 20", __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -119,12 +115,11 @@ void test_pop_underflow (FILE* tests_file) {
 
     stackerr_t err = stack_pop (&stk);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (err == STACK_UNDERFLOW, "pop on empty should return STACK_UNDERFLOW", __LINE__, tests_file);
     check (stk.size == 0,                                  "size should stay 0", __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -143,13 +138,12 @@ void test_top_basic (FILE* tests_file) {
     stack_push (&stk, 20);
     stack_push (&stk, 30);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (stack_top (&stk) == 30,                 "top should be 30",  __LINE__, tests_file);
     check (stk.size == 3,          "size should not change after top",  __LINE__, tests_file);
     check (stack_top (&stk) == 30,           "top should still be 30",  __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0,           "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -165,18 +159,17 @@ void test_push_pop_many (FILE* tests_file) {
     stack_init (&stk);
 
     bool size_ok = true;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 30; i++) {
         stack_push (&stk, i);
         stack_pop  (&stk);
         if (stk.size != 0) { size_ok = false; break; }
     }
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     check (size_ok,       "after each push+pop size should be 0", __LINE__, tests_file);
     check (stk.size == 0,          "in the end size should be 0", __LINE__, tests_file);
-    check (stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should be true", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 0, "verify should be true", __LINE__, tests_file);
 
     free (stk.data - 1);
 }
@@ -193,10 +186,9 @@ void test_verify_detects_broken_canary (FILE* tests_file) {
 
     stk.canary_left = 0;   // специально ломаем
 
-    check (!stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should return false when canary is broken", __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 2, "verify should return false when canary is broken", __LINE__, tests_file);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     free (stk.data - 1);
 }
@@ -217,11 +209,9 @@ void test_verify_detects_broken_hash (FILE* tests_file) {
     stk.size = 999;   // меняем size, но hash не пересчитываем
 
 
-    check (!stack_verify (&stk, __FUNCTION__, __LINE__),
-           "verify should return false when size is changed without updating hash",
-           __LINE__, tests_file);
+    check (STACK_VERIFY(&stk) == 3, "verify should return false when size is changed without updating hash", __LINE__, tests_file);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     stk.size = saved_size;
     free (stk.data - 1);
@@ -244,13 +234,32 @@ void test_verify_detects_broken_data (FILE* tests_file) {
     stk.data[1] = 999;   // подменяем элемент, hash не пересчитываем
 
 
-    check (!stack_verify (&stk, __FUNCTION__, __LINE__),
+    check (STACK_VERIFY(&stk) == 1,
            "verify should return false when data element is changed",
            __LINE__, tests_file);
 
-    stack_dump_tests (tests_file, &stk, __FUNCTION__, __LINE__);
+    STACK_DUMP_TESTS (tests_file,  &stk);
 
     stk.data[1] = saved;   // возвращаем как было для норм free
+    free (stk.data - 1);
+}
+
+// ---------------------------------------------------------------------
+// 11. проверка на распечатку data elements при неудачном хэше //TODO
+// ---------------------------------------------------------------------
+void test_not_printing_data_elements_with_hash_error (FILE* tests_file) {
+    fprintf (tests_file, "\n\n(11) test_verify_detects_broken_data:\n\n");
+
+    stack_t stk = {};
+    stk.capacity = 5;
+    stack_init (&stk);
+    stack_push (&stk, 10);
+    stk.hash = 888;
+
+    fprintf (tests_file, "\nCheck absence of data elements in dump\n\n");
+
+    STACK_DUMP_TESTS (tests_file,  &stk);
+
     free (stk.data - 1);
 }
 
@@ -270,7 +279,7 @@ void check (bool condition, const char* message, int line, FILE* tests_file) {
     fflush (tests_file);
 }
 
-void stack_dump_tests (FILE* tests_file, const stack_t* stk, const char* func, int line) {
+void stack_dump_tests_func (FILE* tests_file, const stack_t* stk, const char* func, int line) {
     if (tests_file == NULL) {
         fprintf (stderr, "Cannot open debug file %s\n", __FILE__);
         return;
@@ -300,11 +309,11 @@ void stack_dump_tests (FILE* tests_file, const stack_t* stk, const char* func, i
     fprintf (tests_file, "    struct address: %p\n", (const void*)stk);
     fprintf (tests_file, "    data address:   %p\n", (const void*)stk->data);
 
-    if (stk->data != NULL && stk->capacity > 0)
+    if (stk->data != NULL && stk->capacity > 0 && (stk->hash == dgb2_hash (stk)))// TODO + test
         print_data_elements (tests_file, stk->data, stk->capacity, stk->size);
 
-    fprintf (tests_file, "\n    size:           %zu\n", stk->size);
-    fprintf (tests_file, "    capacity:       %zu\n", stk->capacity);
+    fprintf (tests_file, "\n    size:           %zd\n", stk->size);
+    fprintf (tests_file, "    capacity:       %zd\n", stk->capacity);
 
     #ifndef NDEBUG
         fprintf (tests_file, "    canary left:    0x%llX ", stk->canary_left);

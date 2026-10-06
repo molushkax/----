@@ -1,21 +1,10 @@
 #include "stack.h"
+#include "stack_funcs.h"
+#include "tests.h"
 #include "hash.h"
 
 // dgb2 хэш функция
 // https://habr.com/ru/companies/otus/articles/541378/?ysclid=muvuuczsvq760208665
-// замешивает один байт в текущее значение хэша: h = h * 33 + byte.
-uint32_t hash_one_byte (uint32_t h, uint8_t byte) {
-    return h * 33 + byte;
-}
-
-// замешивает 64-битное число в хэш, идя по его байтам.
-uint32_t hash_u64 (uint32_t h, uint64_t value) {
-    for (size_t i = 0; i < sizeof (value); i++) {
-        h = hash_one_byte (h, (uint8_t)(value >> (8 * i)));
-    }
-
-    return h;
-}
 
 // хэшируется всё, что определяет состояние стека:
 // - обе канарейки структуры,
@@ -38,7 +27,7 @@ uint32_t dgb2_hash (const stack_t* stk) {
         memcpy (&left_canary, &stk->data[-1], sizeof (stack_elem_t));
         h = hash_u64 (h, left_canary);
 
-        for (size_t i = 0; i < stk->capacity; i++) {
+        for (ssize_t i = 0; i < stk->capacity; i++) {
             uint64_t value_bits = 0;
             memcpy (&value_bits, &stk->data[i], sizeof (stack_elem_t));
             h = hash_u64 (h, value_bits);
@@ -47,6 +36,20 @@ uint32_t dgb2_hash (const stack_t* stk) {
         uint64_t right_canary = 0;
         memcpy (&right_canary, &stk->data[stk->capacity], sizeof (stack_elem_t));
         h = hash_u64 (h, right_canary);
+    }
+
+    return h;
+}
+
+// замешивает один байт в текущее значение хэша: h = h * 33 + byte.
+uint32_t hash_one_byte (uint32_t h, uint8_t byte) {
+    return h * 33 + byte;
+}
+
+// замешивает 64-битное число в хэш, идя по его байтам.
+uint32_t hash_u64 (uint32_t h, uint64_t value) {
+    for (size_t i = 0; i < sizeof (value); i++) {
+        h = hash_one_byte (h, (uint8_t)(value >> (8 * i))); //побитовый сдвиг вправо
     }
 
     return h;

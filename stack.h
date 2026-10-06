@@ -27,6 +27,7 @@ const int TWO_FOR_CANARIES = 2;
 #define RED "\033[31m"
 #define NO_COLOR "\033[0m"
 #define SP "%lg"
+#define FATAL_ERROR 67
 
 enum stackerr_t {
     STACK_OK = 0,
@@ -74,8 +75,8 @@ const struct error_map errors[] = {
 struct stack_t {
     unsigned long long canary_left;
     stack_elem_t*      data;
-    size_t             size;
-    size_t             capacity;
+    ssize_t            size;
+    ssize_t            capacity;
     uint32_t           hash;
     unsigned long long canary_right;
 };
@@ -83,14 +84,14 @@ struct stack_t {
 stackerr_t run_all_tests ();
 
 #ifndef NDEBUG
-    #define STACK_ASSERT_DBG(stk) assert(stack_verify(stk, __FUNCTION__, __LINE__)) //TODO on_dbg
+    #define STACK_ASSERT_DBG(stk) assert(stack_verify_func (stk, __FUNCTION__, __LINE__) == 0) //TODO разные режимы
 #else
     #define STACK_ASSERT_DBG(stk)
 #endif
 
 #define STACK_ASSERT(stk)                                                               \
     do {                                                                                \
-        if (!stack_verify ((stk), __FUNCTION__, __LINE__)) {                            \
+        if (stack_verify_func ((stk), __FUNCTION__, __LINE__) != 0) {                            \
             fprintf (stderr, "Assert failed in %s, line %d\n", __FUNCTION__, __LINE__); \
         }                                                                               \
     } while (0)

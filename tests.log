@@ -2,15 +2,15 @@
 
 (1) test_init:
 
-[04:39:42.701190] =========== STACK DEBUG DUMP ===========
+[17:33:11.746618] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_init
 Line:      19
-Struct:    stack_t at [00000080001ff700]
+Struct:    stack_t at [00000080001ff620]
 
 struct stack_t {
-    struct address: 00000080001ff700
-    data address:   0000008000aa1418
+    struct address: 00000080001ff620
+    data address:   0000008000551418
         [-1] canary: <1.25078e+07> (ALIVE)
         [0] element: <4489> POISON
         [1] element: <4489> POISON
@@ -37,15 +37,15 @@ struct stack_t {
 
 (2) test_push_one:
 
-[04:39:42.702173] =========== STACK DEBUG DUMP ===========
+[17:33:11.748100] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_push_one
-Line:      42
-Struct:    stack_t at [00000080001ff700]
+Line:      41
+Struct:    stack_t at [00000080001ff620]
 
 struct stack_t {
-    struct address: 00000080001ff700
-    data address:   0000008000aa1418
+    struct address: 00000080001ff620
+    data address:   0000008000551418
 
     data in data:
         [-1] canary: <1.25078e+07> (ALIVE)
@@ -78,15 +78,15 @@ struct stack_t {
 
   [OK]   capacity should grow to at least 10
 
-[04:39:42.706673] =========== STACK DEBUG DUMP ===========
+[17:33:11.759921] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_push_many
-Line:      73
-Struct:    stack_t at [00000080001ff6f0]
+Line:      71
+Struct:    stack_t at [00000080001ff610]
 
 struct stack_t {
-    struct address: 00000080001ff6f0
-    data address:   0000008000aa1518
+    struct address: 00000080001ff610
+    data address:   0000008000551518
 
     data in data:
         [-1] canary: <1.25078e+07> (ALIVE)
@@ -120,15 +120,15 @@ struct stack_t {
 
 (4) test_pop_basic:
 
-[04:39:42.709941] =========== STACK DEBUG DUMP ===========
+[17:33:11.764671] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_pop_basic
-Line:      97
-Struct:    stack_t at [00000080001ff700]
+Line:      94
+Struct:    stack_t at [00000080001ff620]
 
 struct stack_t {
-    struct address: 00000080001ff700
-    data address:   0000008000aa1418
+    struct address: 00000080001ff620
+    data address:   0000008000551418
 
     data in data:
         [-1] canary: <1.25078e+07> (ALIVE)
@@ -161,15 +161,15 @@ struct stack_t {
 
 (5) test_pop_underflow:
 
-[04:39:42.710722] =========== STACK DEBUG DUMP ===========
+[17:33:11.765858] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_pop_underflow
-Line:      122
-Struct:    stack_t at [00000080001ff6f0]
+Line:      118
+Struct:    stack_t at [00000080001ff610]
 
 struct stack_t {
-    struct address: 00000080001ff6f0
-    data address:   0000008000aa1418
+    struct address: 00000080001ff610
+    data address:   0000008000551418
         [-1] canary: <1.25078e+07> (ALIVE)
         [0] element: <4489> POISON
         [1] element: <4489> POISON
@@ -194,15 +194,15 @@ struct stack_t {
 
 (6) test_top_basic:
 
-[04:39:42.711535] =========== STACK DEBUG DUMP ===========
+[17:33:11.767414] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_top_basic
-Line:      146
-Struct:    stack_t at [00000080001ff700]
+Line:      141
+Struct:    stack_t at [00000080001ff620]
 
 struct stack_t {
-    struct address: 00000080001ff700
-    data address:   0000008000aa1418
+    struct address: 00000080001ff620
+    data address:   0000008000551418
 
     data in data:
         [-1] canary: <1.25078e+07> (ALIVE)
@@ -231,15 +231,15 @@ struct stack_t {
 
 (7) test_push_pop_many:
 
-[04:39:43.257560] =========== STACK DEBUG DUMP ===========
+[17:33:11.790682] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_push_pop_many
-Line:      174
-Struct:    stack_t at [00000080001ff6f0]
+Line:      168
+Struct:    stack_t at [00000080001ff610]
 
 struct stack_t {
-    struct address: 00000080001ff6f0
-    data address:   0000008000aa1418
+    struct address: 00000080001ff610
+    data address:   0000008000551418
         [-1] canary: <1.25078e+07> (ALIVE)
         [0] element: <4489> POISON
         [1] element: <4489> POISON
@@ -266,22 +266,15 @@ struct stack_t {
 
   [OK]   verify should return false when canary is broken
 
-[04:39:43.257858] =========== STACK DEBUG DUMP ===========
+[17:33:11.791733] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_verify_detects_broken_canary
-Line:      199
-Struct:    stack_t at [00000080001ff700]
+Line:      191
+Struct:    stack_t at [00000080001ff620]
 
 struct stack_t {
-    struct address: 00000080001ff700
-    data address:   0000008000aa1418
-        [-1] canary: <1.25078e+07> (ALIVE)
-        [0] element: <4489> POISON
-        [1] element: <4489> POISON
-        [2] element: <4489> POISON
-        [3] element: <4489> POISON
-        [4] element: <4489> POISON
-        [5] canary:  <2.00125e+08> (ALIVE)
+    struct address: 00000080001ff620
+    data address:   0000008000551418
 
     size:           0
     capacity:       5
@@ -295,24 +288,15 @@ struct stack_t {
 
   [OK]   verify should return false when size is changed without updating hash
 
-[04:39:43.258456] =========== STACK DEBUG DUMP ===========
+[17:33:11.792824] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_verify_detects_broken_hash
-Line:      224
-Struct:    stack_t at [00000080001ff6f0]
+Line:      214
+Struct:    stack_t at [00000080001ff610]
 
 struct stack_t {
-    struct address: 00000080001ff6f0
-    data address:   0000008000aa1418
-
-    data in data:
-        [-1] canary: <1.25078e+07> (ALIVE)
-       *[0] element: <10>
-       *[1] element: <20>
-       *[2] element: <4489>
-       *[3] element: <4489>
-       *[4] element: <4489>
-        [5] canary:  <2.00125e+08> (ALIVE)
+    struct address: 00000080001ff610
+    data address:   0000008000551418
 
     size:           999
     capacity:       5
@@ -327,30 +311,44 @@ WARNING: size > capacity
 
   [OK]   verify should return false when data element is changed
 
-[04:39:43.259104] =========== STACK DEBUG DUMP ===========
+[17:33:11.794433] =========== STACK DEBUG DUMP ===========
 File:      tests.cpp
 Function:  test_verify_detects_broken_data
-Line:      251
-Struct:    stack_t at [00000080001ff6f0]
+Line:      241
+Struct:    stack_t at [00000080001ff610]
 
 struct stack_t {
-    struct address: 00000080001ff6f0
-    data address:   0000008000aa1418
-
-    data in data:
-        [-1] canary: <1.25078e+07> (ALIVE)
-       *[0] element: <10>
-       *[1] element: <999>
-       *[2] element: <30>
-        [3] element: <4489> POISON
-        [4] element: <4489> POISON
-        [5] canary:  <2.00125e+08> (ALIVE)
+    struct address: 00000080001ff610
+    data address:   0000008000551418
 
     size:           3
     capacity:       5
     canary left:    0xBEDABEDA  (ALIVE)
     canary right:   0xBEDABEDAA (ALIVE)
     hash:           0xA80DA7C2 (stored 0x1279A1CF) (HASH MISMATCH - STRUCTURE DAMAGED)
+}
+
+
+(11) test_verify_detects_broken_data:
+
+
+Check absence of data elements in dump
+
+[17:33:11.794851] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_not_printing_data_elements_with_hash_error
+Line:      261
+Struct:    stack_t at [00000080001ff620]
+
+struct stack_t {
+    struct address: 00000080001ff620
+    data address:   0000008000551418
+
+    size:           1
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x84E1408F (stored 0x00000378) (HASH MISMATCH - STRUCTURE DAMAGED)
 }
 
 ------------- RESULT -----------------
