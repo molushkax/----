@@ -1,0 +1,357 @@
+-------------- UNIT TESTS ---------------
+
+(1) test_init:
+
+[04:39:42.701190] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_init
+Line:      19
+Struct:    stack_t at [00000080001ff700]
+
+struct stack_t {
+    struct address: 00000080001ff700
+    data address:   0000008000aa1418
+        [-1] canary: <1.25078e+07> (ALIVE)
+        [0] element: <4489> POISON
+        [1] element: <4489> POISON
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           0
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x48262AA4 (stored 0x48262AA4) (HASH IS VALID)
+}
+  [OK]   size should be 0
+
+  [OK]   capacity should be 5
+
+  [OK]   data should not be NULL
+
+  [OK]   verify should be true
+
+
+
+(2) test_push_one:
+
+[04:39:42.702173] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_push_one
+Line:      42
+Struct:    stack_t at [00000080001ff700]
+
+struct stack_t {
+    struct address: 00000080001ff700
+    data address:   0000008000aa1418
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <42>
+        [1] element: <4489> POISON
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           1
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x46FAB9D0 (stored 0x46FAB9D0) (HASH IS VALID)
+}
+  [OK]   size should be 1
+
+  [OK]   data[0] should be 42
+
+  [OK]   top should be 42
+
+  [OK]   verify should be true
+
+
+
+(3) test_push_many:
+
+  [OK]   size should be 10
+
+  [OK]   capacity should grow to at least 10
+
+[04:39:42.706673] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_push_many
+Line:      73
+Struct:    stack_t at [00000080001ff6f0]
+
+struct stack_t {
+    struct address: 00000080001ff6f0
+    data address:   0000008000aa1518
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <1>
+       *[1] element: <2>
+       *[2] element: <3>
+       *[3] element: <4>
+       *[4] element: <5>
+       *[5] element: <6>
+       *[6] element: <7>
+       *[7] element: <8>
+       *[8] element: <9>
+       *[9] element: <10>
+        [10] element: <4489> POISON
+        [11] element: <4489> POISON
+        [12] element: <4489> POISON
+        [13] element: <4489> POISON
+        [14] canary:  <2.00125e+08> (ALIVE)
+
+    size:           10
+    capacity:       14
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x7A4C6C72 (stored 0x7A4C6C72) (HASH IS VALID)
+}
+  [OK]   all 10 elements should keep their values
+
+  [OK]   verify should be true
+
+
+
+(4) test_pop_basic:
+
+[04:39:42.709941] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_pop_basic
+Line:      97
+Struct:    stack_t at [00000080001ff700]
+
+struct stack_t {
+    struct address: 00000080001ff700
+    data address:   0000008000aa1418
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <10>
+       *[1] element: <20>
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           2
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x39E52E8A (stored 0x39E52E8A) (HASH IS VALID)
+}
+  [OK]   size should be 2
+
+  [OK]   data[0] should be 10
+
+  [OK]   data[1] should be 20
+
+  [OK]   data[2] should be POISON
+
+  [OK]   top should be 20
+
+  [OK]   verify should be true
+
+
+
+(5) test_pop_underflow:
+
+[04:39:42.710722] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_pop_underflow
+Line:      122
+Struct:    stack_t at [00000080001ff6f0]
+
+struct stack_t {
+    struct address: 00000080001ff6f0
+    data address:   0000008000aa1418
+        [-1] canary: <1.25078e+07> (ALIVE)
+        [0] element: <4489> POISON
+        [1] element: <4489> POISON
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           0
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x48262AA4 (stored 0x48262AA4) (HASH IS VALID)
+}
+  [OK]   pop on empty should return STACK_UNDERFLOW
+
+  [OK]   size should stay 0
+
+  [OK]   verify should be true
+
+
+
+(6) test_top_basic:
+
+[04:39:42.711535] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_top_basic
+Line:      146
+Struct:    stack_t at [00000080001ff700]
+
+struct stack_t {
+    struct address: 00000080001ff700
+    data address:   0000008000aa1418
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <30>
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           3
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x1279A1CF (stored 0x1279A1CF) (HASH IS VALID)
+}
+  [OK]   top should be 30
+
+  [OK]   size should not change after top
+
+  [OK]   top should still be 30
+
+  [OK]   verify should be true
+
+
+
+(7) test_push_pop_many:
+
+[04:39:43.257560] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_push_pop_many
+Line:      174
+Struct:    stack_t at [00000080001ff6f0]
+
+struct stack_t {
+    struct address: 00000080001ff6f0
+    data address:   0000008000aa1418
+        [-1] canary: <1.25078e+07> (ALIVE)
+        [0] element: <4489> POISON
+        [1] element: <4489> POISON
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           0
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x48262AA4 (stored 0x48262AA4) (HASH IS VALID)
+}
+  [OK]   after each push+pop size should be 0
+
+  [OK]   in the end size should be 0
+
+  [OK]   verify should be true
+
+
+
+(8) test_verify_detects_broken_canary:
+
+  [OK]   verify should return false when canary is broken
+
+[04:39:43.257858] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_verify_detects_broken_canary
+Line:      199
+Struct:    stack_t at [00000080001ff700]
+
+struct stack_t {
+    struct address: 00000080001ff700
+    data address:   0000008000aa1418
+        [-1] canary: <1.25078e+07> (ALIVE)
+        [0] element: <4489> POISON
+        [1] element: <4489> POISON
+        [2] element: <4489> POISON
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           0
+    capacity:       5
+    canary left:    0x0 (NEED YOUR HELP, PROGRAMMER)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x76CC22F4 (stored 0x48262AA4) (HASH MISMATCH - STRUCTURE DAMAGED)
+}
+
+
+(9) test_verify_detects_broken_hash:
+
+  [OK]   verify should return false when size is changed without updating hash
+
+[04:39:43.258456] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_verify_detects_broken_hash
+Line:      224
+Struct:    stack_t at [00000080001ff6f0]
+
+struct stack_t {
+    struct address: 00000080001ff6f0
+    data address:   0000008000aa1418
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <10>
+       *[1] element: <20>
+       *[2] element: <4489>
+       *[3] element: <4489>
+       *[4] element: <4489>
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           999
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0x3B0F9212 (stored 0x39E52E8A) (HASH MISMATCH - STRUCTURE DAMAGED)
+}
+WARNING: size > capacity
+
+
+(10) test_verify_detects_broken_data:
+
+  [OK]   verify should return false when data element is changed
+
+[04:39:43.259104] =========== STACK DEBUG DUMP ===========
+File:      tests.cpp
+Function:  test_verify_detects_broken_data
+Line:      251
+Struct:    stack_t at [00000080001ff6f0]
+
+struct stack_t {
+    struct address: 00000080001ff6f0
+    data address:   0000008000aa1418
+
+    data in data:
+        [-1] canary: <1.25078e+07> (ALIVE)
+       *[0] element: <10>
+       *[1] element: <999>
+       *[2] element: <30>
+        [3] element: <4489> POISON
+        [4] element: <4489> POISON
+        [5] canary:  <2.00125e+08> (ALIVE)
+
+    size:           3
+    capacity:       5
+    canary left:    0xBEDABEDA  (ALIVE)
+    canary right:   0xBEDABEDAA (ALIVE)
+    hash:           0xA80DA7C2 (stored 0x1279A1CF) (HASH MISMATCH - STRUCTURE DAMAGED)
+}
+
+------------- RESULT -----------------
+Passed 31 / 31
